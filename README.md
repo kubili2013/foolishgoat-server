@@ -52,5 +52,76 @@
 
 ***target*** 文件夹下会生成一个 ***.zip*** 文件。里面的目录结构是类似 ***Tomcat*** 的文件目录。
 
+## 配置
+
+`./conf` 文件夹下有三个配置文件
+
+1. 	`c3p0.properties` 顾名思义，c3p0 数据库连接池的配置文件，详情可 [点击这里](https://github.com/swaldman/c3p0)
+```
+c3p0.driverClass=com.mysql.jdbc.Driver
+c3p0.jdbcUrl=jdbc:mysql://localhost:3307/ty_bundle_db?useUnicode=true&characterEncoding=utf8
+c3p0.user=root
+c3p0.password=123456
+c3p0.initialPoolSize=1
+c3p0.minPoolSize=1
+c3p0.maxPoolSize=2
+c3p0.acquireIncrement=3
+c3p0.maxIdleTime=1000
+c3p0.acquireRetryAttempts=30
+c3p0.acquireRetryDelay=1000
+
+```
+2. `server.properties` 本 Server 的配置文件
+```
+# server config （所有文件的路径全部使用相对地址，根地址为服务器当前解压地址）
+# 开放的端口
+server.port=8888
+# 提供 https 的秘钥文件地址
+server.cert=conf/keystore
+# 秘钥文件密码
+server.keystore.password=123456
+server.keymanager.password=123456
+# 是否开启https
+server.https=true
+# 静态文件的访问地址
+server.app.path=work
+# 路由，数据处理器的配置（下面详细说明）
+server.resource.conf=conf/foolishgoat.conf.json
+```
+3. 	`foolishgoat.conf.json` 路由以及处理器配置
+```
+
+{
+	"processors":[
+		{
+			"name":"validate",
+			"class":"com.foolishgoat.server.processor.ValidateProcessor"
+		},
+		{
+			"name":"table_curd",
+			"class":"com.foolishgoat.server.processor.TableCURDProcessor"
+		},
+		{
+			"name":"utf8",
+			"class":"com.foolishgoat.server.processor.UTF8Processor"
+		},
+		{
+			"name":"router",
+			"class":"com.foolishgoat.server.processor.RouterProcessor"
+		}
+	],
+	"routers":[
+		{
+			"name":"/routers",
+			"method":"GET",
+			"processors":"utf8=>validate=>router",
+			"resourceName":"test",
+			"sql":"",
+			"validators":{}
+		}
+	]
+}
+
+```
 
 
