@@ -1,0 +1,30 @@
+{
+	"processors":[
+		{
+			"name":"validate",
+			"class":"com.foolishgoat.server.processor.ValidateProcessor"
+		},
+		{
+			"name":"table_curd",
+			"class":"com.foolishgoat.server.processor.TableCURDProcessor"
+		},
+		{
+			"name":"utf8",
+			"class":"com.foolishgoat.server.processor.UTF8Processor"
+		},
+		{
+			"name":"router",
+			"class":"com.foolishgoat.server.processor.RouterProcessor"
+		}
+	],
+	"routers":[
+		{
+			"name":"/routers",
+			"method":"GET",
+			"processors":"utf8=>validate=>router",
+			"resourceName":"test",
+			"sql":"",
+			"validators":{}
+		}
+	]
+}
