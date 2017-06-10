@@ -88,7 +88,7 @@ server.app.path=work
 # 路由，数据处理器的配置（下面详细说明）
 server.resource.conf=conf/foolishgoat.conf.json
 ```
-3. 	`foolishgoat.conf.json` 路由以及处理器配置
+3. 	`foolishgoat.conf.json` 路由以及处理器配置大体如下。
 ```
 
 {
@@ -123,5 +123,10 @@ server.resource.conf=conf/foolishgoat.conf.json
 }
 
 ```
+## 通常情况下，将数据库配置好后，即可启动
+
+## 开源协议
+
+MIT
 
 
