@@ -123,7 +123,7 @@ server.resource.conf=conf/foolishgoat.conf.json
 }
 
 ```
-## 通常情况下，将数据库配置好后，即可启动
+> 通常情况下，将数据库配置好后，即可启动
 
 ## 开源协议
 
