@@ -125,13 +125,22 @@ server.resource.conf=conf/foolishgoat.conf.json
 ```
 > 通常情况下，将数据库配置好后，即可启动
 
+
 ## 已经完成的功能
 
-1. 为数据库表格提供 restful api.
-2. 分页查询
-2. Request 参数的格式校验
-3. 静态资源文件获取(.html,.css,.js等)。(Jetty ResourceHandler 实现)
-4. 只支持使用JKS格式证书提供 https 。
+1. 为数据库表自动生成 Router，并且根据生成的 Routers 提供 restful api.
+2. 支持分页查询，并且能设置参数，并根据 Validators 的规则进行校验。
+
+* ` (column)-eq ` 表示相等，生成sql时 ` column = ? `
+* ` (column)-bt ` 表示区间 （between），生成sql时 ` column between ？ and ?  `
+* ` (column)-lt ` 表示小于，生成sql时 ` column < ? `
+* ` (column)-gt ` 表示大于，生成sql时 ` column > ? `
+* ` (column)-lk ` 表示模糊查询 Like，生成sql时 ` column like %?% `
+* ` (column)-null ` 表示是否为空，值只能是 0 或者 1，生成sql时  ` column is null ` 或者 ` column is not null `
+
+3. Request 参数的格式校验
+4. 静态资源文件获取(.html,.css,.js等)。(Jetty ResourceHandler 实现)
+5. 只支持使用JKS格式证书提供 https 。
 
 ## 准备完成
 
