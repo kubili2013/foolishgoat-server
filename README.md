@@ -7,7 +7,7 @@
 
 ## 依赖
 
-> 为了精简，本项目尽量依赖较少的包，提供 Http 服务 Jetty 是很好的选择。C3P0 数据库链接池，用了都说好！
+> 为了精简，本项目尽量依赖较少的包。提供 Http 服务而且要精简，那么 Jetty 是很好的选择。第二是C3P0 数据库链接池，用了都说好！最后还用了 org.json 进行 json 数据的转换。
 
 ```xml
 
@@ -124,6 +124,23 @@ server.resource.conf=conf/foolishgoat.conf.json
 
 ```
 > 通常情况下，将数据库配置好后，即可启动
+
+## 已经完成的功能
+
+1. 为数据库表格提供 restful api.
+2. Request 参数的格式校验
+3. 静态资源文件获取(.html,.css,.js等)。(Jetty ResourceHandler 实现)
+4. 只支持使用JKS格式证书提供 https 。
+
+## 准备完成
+
+1. 支持接入 OAuth2.0 认证
+
+## 一些我瞎想的概念
+
+1. Router 大部分情况下请求具有一定的共性，这里将他们提炼出来，Router 里面有名字，方法，数据处理器链(ProcessorChain),资源名称（目前对应着数据库表），数据校验器。
+
+2. Processor  反正 http 协议只是请求 Url 加一些参数，然后返回结果。大部分的处理都是可以复用的，那不论是 Controller，Filter 都是在处理 Request，Response 里面的数据。用任务链模式，将这些实现了 Processor 接口的类串起来，每个 Router下配置一个类似 *utf8=>validate=>router*  的链子，请求到达后，按照这个链依次执行，这样配置起来能直观表达自己的处理逻辑。他的生命周期，就是 Jetty 中 Handler 的生命周期。
 
 ## 开源协议
 

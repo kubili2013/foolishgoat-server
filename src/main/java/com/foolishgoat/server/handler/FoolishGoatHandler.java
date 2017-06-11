@@ -179,6 +179,9 @@ public class FoolishGoatHandler extends AbstractHandler {
 	 * @param routers
 	 */
 	public static void addRouter(List<Router> routers){
+		for(int i=0;i<routers.size();i++){
+			FoolishGoatHandler.addRouter(routers.get(i));
+		}
 		allRouters.addAll(routers);
 	}
 	/**
@@ -186,6 +189,13 @@ public class FoolishGoatHandler extends AbstractHandler {
 	 * @param routers
 	 */
 	public static void addRouter(Router router){
+		for(int i=0;i<allRouters.size();i++){
+			if(allRouters.get(i).getName().equals(router.getName())){
+				allRouters.remove(i);
+				allRouters.add(i, router);
+				return;
+			}
+		}
 		allRouters.add(router);
 	}
 
