@@ -3,6 +3,10 @@ package com.foolishgoat.server.handler;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +23,8 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.foolishgoat.server.db.C3P0DBPool;
+import com.foolishgoat.server.db.Table;
 import com.foolishgoat.server.exception.RouterConfigException;
 import com.foolishgoat.server.processor.Processor;
 import com.foolishgoat.server.processor.ProcessorChain;
@@ -129,6 +135,29 @@ public class FoolishGoatHandler extends AbstractHandler {
 			JSONObject obj = array.getJSONObject(i);
 			allRouters.add(new Router(obj));
 		}
+		// 将数据表映射为 Router
+		Connection con = C3P0DBPool.getInstance().getConnection();
+		DatabaseMetaData metaData;
+		try {
+			metaData = con.getMetaData();
+			ResultSet rs_table = metaData.getTables(con.getCatalog(), metaData.getUserName(), null, new String[]{"TABLE"});
+			while(rs_table.next()){
+				Table table = new Table(rs_table.getString("TABLE_NAME"),con);
+				this.addRouter(table.toRouter());
+			}
+			rs_table.close();
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "DBResource初始化失败", e);
+			// 退出
+            System.exit(0);
+		}finally{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -178,19 +207,18 @@ public class FoolishGoatHandler extends AbstractHandler {
 	 * 增加多个router
 	 * @param routers
 	 */
-	public static void addRouter(List<Router> routers){
+	public void addRouter(List<Router> routers){
 		for(int i=0;i<routers.size();i++){
-			FoolishGoatHandler.addRouter(routers.get(i));
+			this.addRouter(routers.get(i));
 		}
-		allRouters.addAll(routers);
 	}
 	/**
 	 * 增加单个router
 	 * @param routers
 	 */
-	public static void addRouter(Router router){
+	public void addRouter(Router router){
 		for(int i=0;i<allRouters.size();i++){
-			if(allRouters.get(i).getName().equals(router.getName())){
+			if(allRouters.get(i).getName().equals(router.getName()) && allRouters.get(i).getMethod().equals(router.getMethod())){
 				allRouters.remove(i);
 				allRouters.add(i, router);
 				return;

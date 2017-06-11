@@ -1,18 +1,12 @@
 package com.foolishgoat.server.processor;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.foolishgoat.server.db.C3P0DBPool;
-import com.foolishgoat.server.db.Table;
 import com.foolishgoat.server.handler.FoolishGoatHandler;
 import com.foolishgoat.server.router.Router;
 
@@ -21,7 +15,7 @@ public class RouterProcessor implements Processor {
 	public static final Logger logger = Logger.getLogger("DBProcessor");
 	@Override
 	public void doProcessor(Router router, HttpServletRequest req, HttpServletResponse rep, ProcessorChain chain) {
-		Connection con = C3P0DBPool.getInstance().getConnection();
+		/** Connection con = C3P0DBPool.getInstance().getConnection();
 		DatabaseMetaData metaData;
 		try {
 			metaData = con.getMetaData();
@@ -42,7 +36,7 @@ public class RouterProcessor implements Processor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		} **/
 		
 		try {
 			rep.getWriter().print(FoolishGoatHandler.routerToJson().toString());

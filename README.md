@@ -128,6 +128,7 @@ server.resource.conf=conf/foolishgoat.conf.json
 ## 已经完成的功能
 
 1. 为数据库表格提供 restful api.
+2. 分页查询
 2. Request 参数的格式校验
 3. 静态资源文件获取(.html,.css,.js等)。(Jetty ResourceHandler 实现)
 4. 只支持使用JKS格式证书提供 https 。

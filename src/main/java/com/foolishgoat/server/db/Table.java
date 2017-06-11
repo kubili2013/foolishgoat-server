@@ -89,10 +89,8 @@ public class Table {
 			this.setNullabled(_nullabled);
 			logger.log(Level.INFO, name + "表装载成功");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			logger.log(Level.WARNING, name + "表装载失败", e);
 		}
-
 	}
 
 	public String getName() {
